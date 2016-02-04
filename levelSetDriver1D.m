@@ -8,7 +8,7 @@ b = 1;                                  % right boundary of domain
 M = 11;                                 % # of grid points
 T = 5;                                  % final time
 N = 50;                                 % # of time steps to take
-delay = 0.01;                           % animation delay (0: no animation)
+delay = 0.1;                           % animation delay (0: no animation)
 u = @(x,t)(cos(2*pi*t)*ones(size(x)));  % domain velocity u(x,t)
 phi0 = @(x)(atan((x-0.5*(a+b))*10));    % initial level set psi(x,0)
 
@@ -25,6 +25,7 @@ phi = phi0(x);
 X(1) = fzero(@(y)(interp1(x,phi,y,'pchip')),0.5*(a+b));
 
 if (delay > 0)
+    close all;
     figure(1)
     subplot(1,2,1)
     plot(x,phi,'-b',X(1),0,'ks','linewidth',2,'markersize',8)
@@ -36,7 +37,7 @@ if (delay > 0)
     title(sprintf('time %f', t(1)),'fontsize',12,'fontweight','bold');
     xlabel('t','fontsize',12,'fontweight','bold');
     ylabel('Interface Position','fontsize',12,'fontweight','bold');
-    pause;
+    pause(delay);
 end
 
 % main solution loop

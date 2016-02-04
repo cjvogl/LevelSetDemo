@@ -18,12 +18,14 @@ function phi = reinitializePDE2D(x,y,psi,delay)
 
     if (nargin == 2)
         delay = 0;
+    elseif (delay > 0)
+        close all;
     end
     
     dx = x(1,2) - x(1,1);
     
     % set algorithm parameters
-    % (adopted from Sussman, Smereka, Osher, JCP 1994)
+    % (first two are adopted from Sussman, Smereka, Osher, JCP 1994)
     stopping_tolerance = dx^2; % dtau multiplied in while condition
     smoothing_epsilon = dx;
     CFL = 0.9;

@@ -16,6 +16,8 @@ function phi = reinitializeFMM2D(x,y,psi,delay)
 
     if (nargin == 2)
         delay = 0;
+    elseif (delay > 0)
+        close all;
     end
     
     dx = x(1,2) - x(1,1);

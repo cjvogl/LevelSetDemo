@@ -15,6 +15,8 @@ function phi = reinitializeFMM1D(x,psi,delay)
 
     if (nargin == 2)
         delay = 0;
+    elseif (delay > 0)
+        close all;
     end
     
     dx = x(2) - x(1);

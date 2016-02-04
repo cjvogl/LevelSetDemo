@@ -4,16 +4,16 @@
 % (so that psi(x(s,t),y(s,t),t) = 0).
 
 % user-supplied parameters
-a = 0;                                  % left/bottom boundary of domain
-b = 1;                                  % right/top boundary of domain
-M = 21;                                % # of grid points
-T = 5;                                 % final time
-N = 100;                                % # of time steps to take
-delay = 0.01;                           % animation delay (0: no animation)
+a = 0;                                    % left/bottom boundary of domain
+b = 1;                                    % right/top boundary of domain
+M = 21;                                   % # of grid points
+T = 5;                                    % final time
+N = 100;                                  % # of time steps to take
+delay = 0.1;                             % animation delay (0: no animation)
 u = @(x,y,t)(cos(2*pi*t)*ones(size(x)));  % horiz. domain velocity u(x,y,t)
 v = @(x,y,t)(zeros(size(x)));             % vert. domain velocity v(x,y,t)
 phi0 = @(x,y)((x-0.5*(a+b)).^2 + (y-0.5*(a+b)).^2 ...
-                    - (0.15*(b-a))^2);     % initial level set psi(x,0)
+                    - (0.15*(b-a))^2);    % initial level set psi(x,0)
 
 % set up domain and solution variables
 [x,y] = meshgrid(linspace(a,b,M),linspace(a,b,M));
@@ -25,7 +25,7 @@ t = 0:dt:T;
 % create initial level set and velocity
 phi = phi0(x,y);
 % phi = reinitializeFMM2D(x,y,phi,delay); %optional
- phi = reinitializePDE2D(x,y,phi,delay); %optional
+% phi = reinitializePDE2D(x,y,phi,delay); %optional
 Phi(:,:,1) = phi;
 
 % find max velocity to scale quiver plots
@@ -41,9 +41,11 @@ v_temp = v(x,y,0);
 scale = dx/max_vel;
 
 if (delay > 0)
+    close all;
+    figure(1)
     subplot(1,2,1)
     surfc(x,y,phi)
-    title(sprintf('time %f', t),'fontsize',12,'fontweight','bold');
+    title(sprintf('time %f', t(1)),'fontsize',12,'fontweight','bold');
     xlabel('x','fontsize',12,'fontweight','bold');
     ylabel('y','fontsize',12,'fontweight','bold');
     zlabel('Level Set','fontsize',12,'fontweight','bold');
@@ -52,10 +54,10 @@ if (delay > 0)
     hold on;
     quiver(x,y,scale*u_temp,scale*v_temp,0);
     hold off;
-    title(sprintf('time %f', t),'fontsize',12,'fontweight','bold');
+    title(sprintf('time %f', t(1)),'fontsize',12,'fontweight','bold');
     xlabel('x','fontsize',12,'fontweight','bold');
     ylabel('y','fontsize',12,'fontweight','bold');
-    pause;
+    pause(delay);
 end
 
 % main solution loop
@@ -76,9 +78,10 @@ for j=1:N
     Phi(:,:,j+1) = phi;
    
     if (delay > 0)
+        figure(1)
         subplot(1,2,1)
         surfc(x,y,phi)
-        title(sprintf('time %f', t),'fontsize',12,'fontweight','bold');
+        title(sprintf('time %f', t(j+1)),'fontsize',12,'fontweight','bold');
         xlabel('x','fontsize',12,'fontweight','bold');
         ylabel('y','fontsize',12,'fontweight','bold');
         zlabel('Level Set','fontsize',12,'fontweight','bold');
@@ -87,7 +90,7 @@ for j=1:N
         hold on;
         quiver(x,y,scale*u_nph,scale*v_nph,0)
         hold off;
-        title(sprintf('time %f', t),'fontsize',12,'fontweight','bold');
+        title(sprintf('time %f', t(j+1)),'fontsize',12,'fontweight','bold');
         xlabel('x','fontsize',12,'fontweight','bold');
         ylabel('y','fontsize',12,'fontweight','bold');
         pause(delay);
