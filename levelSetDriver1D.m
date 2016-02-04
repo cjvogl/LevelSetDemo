@@ -25,6 +25,7 @@ phi = phi0(x);
 X(1) = fzero(@(y)(interp1(x,phi,y,'pchip')),0.5*(a+b));
 
 if (delay > 0)
+    figure(1)
     subplot(1,2,1)
     plot(x,phi,'-b',X(1),0,'ks','linewidth',2,'markersize',8)
     title(sprintf('time %f', t),'fontsize',12,'fontweight','bold');
@@ -55,6 +56,7 @@ for j=1:N
     X(j+1) = fzero(@(y)(interp1(x,phi,y)),X(j),'pchip');
    
     if (delay > 0)
+        figure(1)
         subplot(1,2,1)
         plot(x,phi,'-b',X(j+1),0,'ks','linewidth',2,'markersize',8)
         title(sprintf('time %f', t),'fontsize',12,'fontweight','bold');
